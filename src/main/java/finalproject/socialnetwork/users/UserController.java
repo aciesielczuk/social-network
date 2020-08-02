@@ -22,6 +22,9 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity addUser(@RequestBody User user) {
+        if (userService.existsUserByUsername(user.getUsername())) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
         return ResponseEntity.ok(userService.addUser(user));
     }
 }
