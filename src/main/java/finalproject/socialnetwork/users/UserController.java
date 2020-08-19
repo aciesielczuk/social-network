@@ -33,8 +33,8 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody User user) {
-        Optional <User> userFromDb = userService.getUserByUsername(user.getUsername());
-        if (userFromDb.isEmpty() || !userService.isPasswordCorrect(userFromDb,user)) {
+        Optional<User> userFromDb = userService.getUserByUsername(user.getUsername());
+        if (userFromDb.isEmpty() || !userService.isPasswordCorrect(userFromDb, user)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok().build();
