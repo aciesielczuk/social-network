@@ -18,6 +18,10 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
+    public Optional<Post> findById(int id) {
+        return postRepository.findById((long) id);
+    }
+
     public Post savePost(Post post) {
         return postRepository.save(post);
     }
