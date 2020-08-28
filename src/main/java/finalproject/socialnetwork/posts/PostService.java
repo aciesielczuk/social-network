@@ -3,8 +3,8 @@ package finalproject.socialnetwork.posts;
 import finalproject.socialnetwork.users.User;
 import finalproject.socialnetwork.users.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,8 +26,14 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post addPost(String username, @RequestBody String postBody) {
-        Optional<User> userFromDB = userRepository.findByUsername(username);
+    public Post addPost(String token, String postBody) {
+        Optional<User> userFromDB = userRepository.findByToken(token);
         return new Post(userFromDB.get(), postBody);
     }
+
+    public List<Post> getPosts() {
+        return postRepository.findAll();
+    }
+
+
 }
