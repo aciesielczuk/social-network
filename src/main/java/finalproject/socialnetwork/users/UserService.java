@@ -1,8 +1,8 @@
 package finalproject.socialnetwork.users;
 
+import finalproject.socialnetwork.utils.TokenGenerator;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +24,7 @@ public class UserService {
     }
 
     public User addUser(User user) {
+        user.setToken(TokenGenerator.generateToken());
         return userRepository.save(user);
     }
 
@@ -33,6 +34,10 @@ public class UserService {
 
     public boolean isPasswordCorrect(Optional<User> userFromDb, User user) {
         return userFromDb.get().getPassword().equals(user.getPassword());
+    }
+
+    public Optional<User> getUserByToken(String token) {
+        return userRepository.findByToken(token);
     }
 
 }

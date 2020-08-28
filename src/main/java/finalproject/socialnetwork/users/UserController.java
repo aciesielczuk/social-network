@@ -1,12 +1,14 @@
 package finalproject.socialnetwork.users;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private UserService userService;
@@ -15,29 +17,41 @@ public class UserController {
         this.userService = userService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/users")
     public ResponseEntity getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/users")
-    public ResponseEntity addUser(@RequestBody User user) {
+    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TokenResponse> addUser(@RequestBody User user) {
         if (userService.existsUserByUsername(user.getUsername())) {
             return ResponseEntity.unprocessableEntity().build();
         }
-        return ResponseEntity.ok(userService.addUser(user));
+        User persistUser = userService.addUser(user);
+        TokenResponse tokenResponse = new TokenResponse(persistUser.getToken());
+        return ResponseEntity.ok(tokenResponse);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody User user) {
         Optional<User> userFromDb = userService.getUserByUsername(user.getUsername());
         if (userFromDb.isEmpty() || !userService.isPasswordCorrect(userFromDb, user)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        // stworzyć sesję użytkownika
         return ResponseEntity.ok().build();
+    }
+
+    public class TokenResponse {
+        private String token;
+
+        public TokenResponse(String token) {
+            this.token = token;
+        }
+
+        public String getToken() {
+            return token;
+        }
     }
 
 }

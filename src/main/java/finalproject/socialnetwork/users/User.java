@@ -1,5 +1,7 @@
 package finalproject.socialnetwork.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -17,6 +19,9 @@ public class User {
 
     @NonNull
     private String password;
+
+    @NonNull
+    private String token;
 
     public User() {
     }
@@ -43,11 +48,23 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @JsonIgnore
+    public String getToken() {
+        return token;
+    }
+
+    @JsonProperty
+    public void setToken(@NonNull String token) {
+        this.token = token;
     }
 }
