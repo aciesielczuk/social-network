@@ -22,8 +22,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TokenResponse> addUser(@RequestBody User user) {
+    @PostMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TokenResponse> registerUserUser(@RequestBody User user) {
         if (userService.existsUserByUsername(user.getUsername())) {
             return ResponseEntity.unprocessableEntity().build();
         }
@@ -33,13 +33,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody User user) {
+    public ResponseEntity<TokenResponse> login(@RequestBody User user) {
         Optional<User> userFromDb = userService.getUserByUsername(user.getUsername());
         if (userFromDb.isEmpty() || !userService.isPasswordCorrect(userFromDb, user)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        // stworzyć sesję użytkownika
-        return ResponseEntity.ok().build();
+        TokenResponse tokenResponse = new TokenResponse(userFromDb.get().getToken());
+        return ResponseEntity.ok(tokenResponse);
     }
 
     public class TokenResponse {
