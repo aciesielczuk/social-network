@@ -26,9 +26,9 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post addPost(String token, String postBody) {
+    public Post addPost(String token, Post post) {
         Optional<User> userFromDB = userRepository.findByToken(token);
-        return new Post(userFromDB.get(), postBody);
+        return new Post(userFromDB.get(), post.getPostBody());
     }
 
     public List<Post> getPosts() {

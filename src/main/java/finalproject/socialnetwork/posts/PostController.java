@@ -20,8 +20,8 @@ public class PostController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/add-post")
-    public ResponseEntity addPost(@RequestHeader("x-authorization-token") String token, @RequestBody String postBody) {
+    @PostMapping("/posts")
+    public ResponseEntity addPost(@RequestHeader("x-authorization-token") String token, @RequestBody Post postBody) {
         Optional<User> userFromDB = userService.getUserByToken(token);
         if (userFromDB.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
