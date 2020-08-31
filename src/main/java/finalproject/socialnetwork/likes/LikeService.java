@@ -32,15 +32,20 @@ public class LikeService {
         return likeRepository.save(like);
     }
 
-    public Like removeLike(int postId, int id) {
+    public Like removeLike(String token, int postId) {
         Optional<Post> postFromDB = postRepository.findById(postId);
-        Optional<Like> likeFromDB = likeRepository.findById(id);
+        Optional<Like> likeFromDB = likeRepository.findByUserTokenAndPostId(token, postId);
         postFromDB.get().setLikes(postFromDB.get().getLikes() - 1);
         return likeFromDB.get();
     }
 
     public void deleteLike(Like like) {
         likeRepository.delete(like);
+    }
+
+    public boolean isLikedByUser(String token, int postId) {
+        Optional<Like> likeFromDB = likeRepository.findByUserTokenAndPostId(token, postId);
+        return !likeFromDB.isEmpty() ? true : false;
     }
 
 

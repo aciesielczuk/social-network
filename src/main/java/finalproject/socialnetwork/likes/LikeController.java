@@ -34,12 +34,15 @@ public class LikeController {
         if (postService.findById(postId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+        if (likeService.isLikedByUser(token, postId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         Like like = likeService.addLike(token, postId);
         return ResponseEntity.ok(likeService.saveLike(like));
     }
 
     @DeleteMapping("/likes")
-    public ResponseEntity<Like> dislikePost(@RequestHeader("x-authorization-token") String token, @RequestHeader("postId") int postId, int id) {
+    public ResponseEntity<Like> dislikePost(@RequestHeader("x-authorization-token") String token, @RequestHeader("postId") int postId) {
         Optional<User> userFromDB = userService.getUserByToken(token);
         if (userFromDB.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -47,7 +50,10 @@ public class LikeController {
         if (postService.findById(postId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Like like = likeService.removeLike(postId, id);
+        if (!likeService.isLikedByUser(token, postId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Like like = likeService.removeLike(token, postId);
         likeService.deleteLike(like);
         return ResponseEntity.ok().build();
     }

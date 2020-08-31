@@ -15,7 +15,7 @@ public class Like {
     private int id;
 
     @NonNull
-    @ManyToOne
+    @OneToOne
     private User user;
 
     @NonNull
