@@ -1,6 +1,5 @@
 package finalproject.socialnetwork.comments;
 
-import finalproject.socialnetwork.posts.Post;
 import finalproject.socialnetwork.posts.PostService;
 import finalproject.socialnetwork.users.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 public class CommentController {
 
     CommentService commentService;
@@ -24,7 +24,6 @@ public class CommentController {
         this.postService = postService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/add-comment")
     public ResponseEntity addCommentToPost(@RequestHeader("username") String username, @RequestHeader("postId") int postId, @RequestBody String commentBody) {
         if (!userService.existsUserByUsername(username)) {

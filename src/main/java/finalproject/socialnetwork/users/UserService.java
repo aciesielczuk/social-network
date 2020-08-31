@@ -39,11 +39,7 @@ public class UserService {
     }
 
     public boolean isPasswordCorrect(Optional<User> userFromDb, User user) {
-        System.out.println(userFromDb.get().getPassword());
-        System.out.println(passwordEncoder.encode(user.getPassword()));
-        System.out.println(user.getPassword());
         return passwordEncoder.matches(user.getPassword(), userFromDb.get().getPassword());
-        //return userFromDb.get().getPassword().equals(passwordEncoder.encode(user.getPassword()));
     }
 
     public Optional<User> getUserByToken(String token) {

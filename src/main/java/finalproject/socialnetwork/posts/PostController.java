@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
 
     PostService postService;
@@ -19,7 +20,6 @@ public class PostController {
         this.userService = userService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/posts")
     public ResponseEntity addPost(@RequestHeader("x-authorization-token") String token, @RequestBody Post postBody) {
         Optional<User> userFromDB = userService.getUserByToken(token);
@@ -30,7 +30,6 @@ public class PostController {
         return ResponseEntity.ok(postService.savePost(post));
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/posts")
     public ResponseEntity getPosts(@RequestHeader("x-authorization-token") String token) {
         Optional<User> userFromDB = userService.getUserByToken(token);
