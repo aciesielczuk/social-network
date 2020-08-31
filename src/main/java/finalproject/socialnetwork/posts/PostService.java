@@ -19,7 +19,7 @@ public class PostService {
     }
 
     public Optional<Post> findById(int id) {
-        return postRepository.findById((long) id);
+        return postRepository.findById(id);
     }
 
     public Post savePost(Post post) {

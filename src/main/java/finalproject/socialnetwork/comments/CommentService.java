@@ -5,7 +5,6 @@ import finalproject.socialnetwork.posts.PostRepository;
 import finalproject.socialnetwork.users.User;
 import finalproject.socialnetwork.users.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
@@ -22,10 +21,10 @@ public class CommentService {
         this.userRepository = userRepository;
     }
 
-    public Comment addComment(String username, int postId, @RequestBody String commentBody) {
-        Optional<User> userFromDB = userRepository.findByUsername(username);
-        Optional<Post> postFromDB = postRepository.findById((long) postId);
-        return new Comment(userFromDB.get(), postFromDB.get(), commentBody);
+    public Comment addComment(String token, int postId, Comment comment) {
+        Optional<User> userFromDB = userRepository.findByToken(token);
+        Optional<Post> postFromDB = postRepository.findById(postId);
+        return new Comment(userFromDB.get(), postFromDB.get(), comment.getCommentBody());
     }
 
     public Comment saveComment(Comment comment) {

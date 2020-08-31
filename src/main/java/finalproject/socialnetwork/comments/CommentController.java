@@ -1,6 +1,7 @@
 package finalproject.socialnetwork.comments;
 
 import finalproject.socialnetwork.posts.PostService;
+import finalproject.socialnetwork.users.User;
 import finalproject.socialnetwork.users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+
+import java.util.Optional;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
@@ -24,15 +27,16 @@ public class CommentController {
         this.postService = postService;
     }
 
-    @PostMapping("/add-comment")
-    public ResponseEntity addCommentToPost(@RequestHeader("username") String username, @RequestHeader("postId") int postId, @RequestBody String commentBody) {
-        if (!userService.existsUserByUsername(username)) {
+    @PostMapping("/comments")
+    public ResponseEntity addCommentToPost(@RequestHeader("x-authorization-token") String token, @RequestHeader("postId") int postId, @RequestBody Comment commentBody) {
+        Optional<User> userFromDB = userService.getUserByToken(token);
+        if (userFromDB.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         if (postService.findById(postId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Comment comment = commentService.addComment(username, postId, commentBody);
+        Comment comment = commentService.addComment(token, postId, commentBody);
         return ResponseEntity.ok(commentService.saveComment(comment));
     }
 }

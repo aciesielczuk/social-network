@@ -36,7 +36,10 @@ public class Comment {
         this.post = post;
     }
 
-    public Comment(User user, Post post, String commentBody) {
+    public Comment(@NonNull User user, @NonNull Post post, @NonNull String commentBody) {
+        this.commentBody = commentBody;
+        this.user = user;
+        this.post = post;
     }
 
     public int getId() {
