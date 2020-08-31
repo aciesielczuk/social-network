@@ -21,18 +21,23 @@ public class Post {
     @Column(name = "post_body")
     private String postBody;
 
+    @NonNull
+    private int likes;
+
     public Post() {
     }
 
     public Post(User user, String postBody) {
         this.user = user;
         this.postBody = postBody;
+        this.likes = 0;
     }
 
     public Post(int id, @NonNull User user, @NonNull String postBody) {
         this.id = id;
         this.user = user;
         this.postBody = postBody;
+        this.likes = 0;
     }
 
     public int getId() {
@@ -59,5 +64,13 @@ public class Post {
 
     public void setPostBody(@NonNull String postBody) {
         this.postBody = postBody;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }
