@@ -1,9 +1,12 @@
 package finalproject.socialnetwork.posts;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import finalproject.socialnetwork.likes.Like;
 import finalproject.socialnetwork.users.User;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -21,8 +24,9 @@ public class Post {
     @Column(name = "post_body")
     private String postBody;
 
-    @NonNull
-    private int likes;
+    @OneToMany(mappedBy = "post")
+    @JsonIgnoreProperties("post")
+    private Set<Like> likes;
 
     public Post() {
     }
@@ -30,14 +34,12 @@ public class Post {
     public Post(User user, String postBody) {
         this.user = user;
         this.postBody = postBody;
-        this.likes = 0;
     }
 
     public Post(int id, @NonNull User user, @NonNull String postBody) {
         this.id = id;
         this.user = user;
         this.postBody = postBody;
-        this.likes = 0;
     }
 
     public int getId() {
@@ -66,11 +68,11 @@ public class Post {
         this.postBody = postBody;
     }
 
-    public int getLikes() {
+    public Set<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
 }

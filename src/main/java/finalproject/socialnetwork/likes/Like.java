@@ -20,8 +20,8 @@ public class Like {
 
     @NonNull
     @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
-
 
     public Like() {
     }
