@@ -28,7 +28,7 @@ public class UserController {
             return ResponseEntity.unprocessableEntity().build();
         }
         User persistUser = userService.addUser(user);
-        TokenResponse tokenResponse = new TokenResponse(persistUser.getToken());
+        TokenResponse tokenResponse = new TokenResponse(persistUser.getToken(), persistUser.getId());
         return ResponseEntity.ok(tokenResponse);
     }
 
@@ -38,19 +38,25 @@ public class UserController {
         if (userFromDb.isEmpty() || !userService.isPasswordCorrect(userFromDb, user)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        TokenResponse tokenResponse = new TokenResponse(userFromDb.get().getToken());
+        TokenResponse tokenResponse = new TokenResponse(userFromDb.get().getToken(), userFromDb.get().getId());
         return ResponseEntity.ok(tokenResponse);
     }
 
     public class TokenResponse {
         private String token;
+        private int userId;
 
-        public TokenResponse(String token) {
+        public TokenResponse(String token, int userId) {
             this.token = token;
+            this.userId = userId;
         }
 
         public String getToken() {
             return token;
+        }
+
+        public int getUserId() {
+            return userId;
         }
     }
 
