@@ -55,7 +55,7 @@ public class LikeController {
         if (!likeService.isLikedByUser(token, postId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Like like = likeService.removeLike(token, postId);
+        Like like = likeService.findByTokenAndPostId(token, postId);
         likeService.deleteLike(like);
         return ResponseEntity.ok().build();
     }

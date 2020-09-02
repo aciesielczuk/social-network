@@ -31,7 +31,7 @@ public class LikeService {
         return likeRepository.save(like);
     }
 
-    public Like removeLike(String token, int postId) {
+    public Like findByTokenAndPostId(String token, int postId) {
         Optional<Like> likeFromDB = likeRepository.findByUserTokenAndPostId(token, postId);
         return likeFromDB.get();
     }
