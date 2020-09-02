@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TokenResponse> registerUserUser(@RequestBody User user) {
+    public ResponseEntity<TokenResponse> registerUser(@RequestBody User user) {
         if (userService.existsUserByUsername(user.getUsername())) {
             return ResponseEntity.unprocessableEntity().build();
         }
