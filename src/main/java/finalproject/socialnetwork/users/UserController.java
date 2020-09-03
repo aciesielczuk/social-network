@@ -1,7 +1,6 @@
 package finalproject.socialnetwork.users;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @PostMapping(value = "/registration", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/registration")
     public ResponseEntity<TokenResponse> registerUser(@RequestBody User user) {
         if (userService.existsUserByUsername(user.getUsername())) {
             return ResponseEntity.unprocessableEntity().build();
@@ -42,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(tokenResponse);
     }
 
-    public class TokenResponse {
+    public static class TokenResponse {
         private String token;
         private int userId;
 
