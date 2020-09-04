@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.Optional;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://snetwork-app.herokuapp.com"})
 public class LikeController {
 
     LikeService likeService;
