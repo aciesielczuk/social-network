@@ -20,7 +20,7 @@ public class PostController {
         this.userService = userService;
     }
 
-    @PostMapping("/posts")
+    @PostMapping(value="/posts", produces = "application/json; charset=UTF-8")
     public ResponseEntity addPost(@RequestHeader("x-authorization-token") String token, @RequestBody Post postBody) {
         Optional<User> userFromDB = userService.getUserByToken(token);
         if (userFromDB.isEmpty()) {
@@ -30,7 +30,7 @@ public class PostController {
         return ResponseEntity.ok(postService.savePost(post));
     }
 
-    @GetMapping("/posts")
+    @GetMapping(value="/posts", produces = "application/json; charset=UTF-8")
     public ResponseEntity getPosts(@RequestHeader("x-authorization-token") String token) {
         Optional<User> userFromDB = userService.getUserByToken(token);
         if (userFromDB.isEmpty()) {
