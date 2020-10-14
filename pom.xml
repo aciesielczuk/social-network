@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>14</java.version>
 		<junit.version>5.4.2</junit.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
